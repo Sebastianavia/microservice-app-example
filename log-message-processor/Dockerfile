@@ -1,12 +1,14 @@
 FROM python:3.6
 
-WORKDIR  /usr/src/app
+# Establecer el directorio de trabajo dentro del contenedor
+WORKDIR /app
 
-COPY . /usr/src/app
-
-ENV REDIS_PORT=6379 \
-    REDIS_CHANNEL=log_channel \
-    REDIS_HOST=redis_queue
+# Copiar el archivo package.json y package-lock.json (si existe)
+COPY . .
 
 RUN pip3 install -r requirements.txt
-CMD python3 main.py
+EXPOSE 6029
+ENV REDIS_HOST=redis
+ENV REDIS_PORT=6379 
+ENV REDIS_CHANNEL=log_channel 
+CMD ["python3", "main.py"]
